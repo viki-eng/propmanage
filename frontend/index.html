@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PropManage – Property Maintenance Management</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ── Auth Screen ─────────────────────────────────────────────────── -->
+<div id="auth-screen" class="screen active">
+    <div class="auth-container">
+        <div class="auth-brand">
+            <div class="brand-icon">🏠</div>
+            <h1>PropManage</h1>
+            <p>Property Maintenance Management</p>
+        </div>
+
+        <!-- Login Form -->
+        <form id="login-form" class="auth-form active">
+            <h2>Welcome back</h2>
+            <div class="form-group">
+                <label for="login-email">Email</label>
+                <input type="email" id="login-email" placeholder="you@example.com" required>
+            </div>
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            <p class="auth-switch">Don't have an account? <a href="#" id="show-register">Sign up</a></p>
+            <div id="login-error" class="form-error hidden"></div>
+
+            <!-- Demo Credentials -->
+            <div class="demo-credentials">
+                <p class="demo-title">Demo Accounts</p>
+                <button type="button" class="demo-btn" data-email="manager@propmanage.com" data-pass="password123">
+                    <span class="demo-role">Manager</span>
+                    <span class="demo-email">manager@propmanage.com</span>
+                </button>
+                <button type="button" class="demo-btn" data-email="tenant1@propmanage.com" data-pass="password123">
+                    <span class="demo-role">Tenant</span>
+                    <span class="demo-email">tenant1@propmanage.com</span>
+                </button>
+                <button type="button" class="demo-btn" data-email="tech1@propmanage.com" data-pass="password123">
+                    <span class="demo-role">Technician</span>
+                    <span class="demo-email">tech1@propmanage.com</span>
+                </button>
+            </div>
+        </form>
+
+        <!-- Register Form -->
+        <form id="register-form" class="auth-form">
+            <h2>Create account</h2>
+            <div class="form-group">
+                <label for="reg-name">Full Name</label>
+                <input type="text" id="reg-name" placeholder="John Doe" required>
+            </div>
+            <div class="form-group">
+                <label for="reg-email">Email</label>
+                <input type="email" id="reg-email" placeholder="you@example.com" required>
+            </div>
+            <div class="form-group">
+                <label for="reg-phone">Phone (optional)</label>
+                <input type="tel" id="reg-phone" placeholder="+1 234 567 890">
+            </div>
+            <div class="form-group">
+                <label for="reg-password">Password</label>
+                <input type="password" id="reg-password" placeholder="Min 6 characters" required minlength="6">
+            </div>
+            <div class="form-group">
+                <label for="reg-role">Role</label>
+                <select id="reg-role">
+                    <option value="tenant">Tenant</option>
+                    <option value="manager">Property Manager</option>
+                    <option value="technician">Technician</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+            <p class="auth-switch">Already have an account? <a href="#" id="show-login">Sign in</a></p>
+            <div id="register-error" class="form-error hidden"></div>
+        </form>
+    </div>
+</div>
+
+<!-- ── Main App ────────────────────────────────────────────────────── -->
+<div id="app-screen" class="screen">
+
+    <!-- Top Navigation -->
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <button id="menu-toggle" class="icon-btn menu-btn" aria-label="Menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+            <div class="brand-small">🏠 PropManage</div>
+        </div>
+        <div class="top-bar-right">
+            <button id="notif-btn" class="icon-btn notif-btn" aria-label="Notifications">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+                <span id="notif-badge" class="badge hidden">0</span>
+            </button>
+            <div id="user-avatar" class="avatar" title="Profile">M</div>
+        </div>
+    </header>
+
+    <!-- Sidebar Navigation -->
+    <nav id="sidebar" class="sidebar">
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+        <div class="sidebar-content">
+            <div class="sidebar-user">
+                <div class="avatar avatar-lg" id="sidebar-avatar">M</div>
+                <div class="sidebar-user-info">
+                    <span id="sidebar-name" class="sidebar-name">User</span>
+                    <span id="sidebar-role" class="sidebar-badge">Role</span>
+                </div>
+            </div>
+            <ul class="sidebar-nav">
+                <li><a href="#" data-page="dashboard" class="nav-link active">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                    Dashboard
+                </a></li>
+                <li><a href="#" data-page="tickets" class="nav-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    Tickets
+                </a></li>
+                <li><a href="#" data-page="notifications" class="nav-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+                    Notifications
+                    <span id="sidebar-notif-count" class="sidebar-count hidden">0</span>
+                </a></li>
+                <li><a href="#" data-page="profile" class="nav-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    My Profile
+                </a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <a href="#" id="logout-btn" class="nav-link logout-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Dashboard Page -->
+        <section id="page-dashboard" class="page active">
+            <div class="page-header">
+                <h2>Dashboard</h2>
+                <button id="new-ticket-btn" class="btn btn-primary btn-sm" style="display:none;">
+                    + New Request
+                </button>
+            </div>
+
+            <div class="stats-grid" id="stats-grid">
+                <div class="stat-card stat-total">
+                    <div class="stat-number" id="stat-total">0</div>
+                    <div class="stat-label">Total</div>
+                </div>
+                <div class="stat-card stat-open">
+                    <div class="stat-number" id="stat-open">0</div>
+                    <div class="stat-label">Open</div>
+                </div>
+                <div class="stat-card stat-assigned">
+                    <div class="stat-number" id="stat-assigned">0</div>
+                    <div class="stat-label">Assigned</div>
+                </div>
+                <div class="stat-card stat-progress">
+                    <div class="stat-number" id="stat-progress">0</div>
+                    <div class="stat-label">In Progress</div>
+                </div>
+                <div class="stat-card stat-done">
+                    <div class="stat-number" id="stat-done">0</div>
+                    <div class="stat-label">Done</div>
+                </div>
+            </div>
+
+            <div class="section-header">
+                <h3>Recent Tickets</h3>
+            </div>
+            <div id="dashboard-tickets" class="ticket-list">
+                <div class="empty-state">Loading...</div>
+            </div>
+        </section>
+
+        <!-- Tickets Page -->
+        <section id="page-tickets" class="page">
+            <div class="page-header">
+                <h2>Tickets</h2>
+                <button id="new-ticket-btn-2" class="btn btn-primary btn-sm" style="display:none;">
+                    + New Request
+                </button>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters-bar">
+                <div class="filter-group">
+                    <select id="filter-status" class="filter-select">
+                        <option value="">All Status</option>
+                        <option value="open">Open</option>
+                        <option value="assigned">Assigned</option>
+                        <option value="in_progress">In Progress</option>
+                        <option value="done">Done</option>
+                    </select>
+                    <select id="filter-priority" class="filter-select">
+                        <option value="">All Priority</option>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                        <option value="urgent">Urgent</option>
+                    </select>
+                </div>
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="Search tickets..." class="search-input">
+                </div>
+            </div>
+
+            <div id="tickets-list" class="ticket-list">
+                <div class="empty-state">Loading...</div>
+            </div>
+        </section>
+
+        <!-- Ticket Detail Page -->
+        <section id="page-ticket-detail" class="page">
+            <div class="page-header">
+                <button id="back-to-tickets" class="btn btn-ghost btn-sm">← Back</button>
+                <div id="ticket-actions" class="ticket-actions"></div>
+            </div>
+            <div id="ticket-detail-content">
+                <div class="empty-state">Loading...</div>
+            </div>
+        </section>
+
+        <!-- Create Ticket Page -->
+        <section id="page-create-ticket" class="page">
+            <div class="page-header">
+                <button id="back-from-create" class="btn btn-ghost btn-sm">← Back</button>
+                <h2>New Maintenance Request</h2>
+            </div>
+            <form id="create-ticket-form" class="card form-card">
+                <div class="form-group">
+                    <label for="ticket-title">Title *</label>
+                    <input type="text" id="ticket-title" placeholder="e.g., Leaking faucet in kitchen" required>
+                </div>
+                <div class="form-group">
+                    <label for="ticket-desc">Description *</label>
+                    <textarea id="ticket-desc" rows="4" placeholder="Describe the issue in detail..." required></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="ticket-address">Property Address</label>
+                        <input type="text" id="ticket-address" placeholder="123 Main St">
+                    </div>
+                    <div class="form-group">
+                        <label for="ticket-unit">Unit Number</label>
+                        <input type="text" id="ticket-unit" placeholder="Apt 4B">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="ticket-priority">Priority</label>
+                    <select id="ticket-priority">
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                        <option value="urgent">Urgent</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Attach Images</label>
+                    <div class="file-upload-area" id="file-upload-area">
+                        <input type="file" id="ticket-images" multiple accept="image/*" class="file-input">
+                        <div class="file-upload-label">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                            <span>Tap to upload images</span>
+                            <span class="file-hint">JPG, PNG, GIF up to 5MB</span>
+                        </div>
+                    </div>
+                    <div id="image-preview" class="image-preview"></div>
+                </div>
+                <div id="create-error" class="form-error hidden"></div>
+                <button type="submit" class="btn btn-primary btn-block">Submit Request</button>
+            </form>
+        </section>
+
+        <!-- Notifications Page -->
+        <section id="page-notifications" class="page">
+            <div class="page-header">
+                <h2>Notifications</h2>
+                <button id="mark-all-read-btn" class="btn btn-ghost btn-sm">Mark all read</button>
+            </div>
+            <div id="notifications-list" class="notifications-list">
+                <div class="empty-state">Loading...</div>
+            </div>
+        </section>
+
+        <!-- Profile Page -->
+        <section id="page-profile" class="page">
+            <div class="page-header">
+                <h2>My Profile</h2>
+            </div>
+            <div class="profile-page">
+                <div class="profile-card card">
+                    <div class="profile-avatar-section">
+                        <div class="profile-avatar-wrapper">
+                            <div id="profile-avatar-display" class="profile-avatar-circle">M</div>
+                            <img id="profile-avatar-img" class="profile-avatar-img hidden" src="" alt="Avatar">
+                            <label class="profile-avatar-edit" for="profile-avatar-input" title="Change photo">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                            </label>
+                            <input type="file" id="profile-avatar-input" accept="image/*" class="hidden">
+                        </div>
+                        <div class="profile-meta">
+                            <span id="profile-display-name" class="profile-display-name">User Name</span>
+                            <span id="profile-display-role" class="sidebar-badge">Role</span>
+                            <span id="profile-display-email" class="profile-display-email">email@example.com</span>
+                        </div>
+                    </div>
+                </div>
+                <form id="profile-form" class="profile-form card">
+                    <h3>Edit Profile</h3>
+                    <div class="form-group">
+                        <label for="profile-name">Full Name</label>
+                        <input type="text" id="profile-name" placeholder="Your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-phone">Phone</label>
+                        <input type="tel" id="profile-phone" placeholder="+1 234 567 890">
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-bio">About Me</label>
+                        <textarea id="profile-bio" rows="3" placeholder="Tell us a little about yourself..."></textarea>
+                    </div>
+                    <div id="profile-error" class="form-error hidden"></div>
+                    <div class="profile-form-actions">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="button" id="profile-logout-btn" class="btn btn-danger">Logout</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<!-- Assign Modal (Manager) -->
+<div id="assign-modal" class="modal hidden">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Assign Technician</h3>
+            <button class="modal-close" id="assign-modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="assign-tech-select">Select Technician</label>
+                <select id="assign-tech-select" class="filter-select">
+                    <option value="">-- Select --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="assign-priority-select">Priority</label>
+                <select id="assign-priority-select" class="filter-select">
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                    <option value="urgent">Urgent</option>
+                </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-ghost" id="assign-cancel">Cancel</button>
+            <button class="btn btn-primary" id="assign-confirm">Assign</button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast container -->
+<div id="toast-container" class="toast-container"></div>
+
+<script src="/js/api.js?v=1.1"></script>
+<script src="/js/auth.js?v=1.1"></script>
+<script src="/js/tickets.js?v=1.1"></script>
+<script src="/js/notifications.js?v=1.1"></script>
+<script src="/js/profile.js?v=1.1"></script>
+<script src="/js/app.js?v=1.1"></script>
+</body>
+</html>
